@@ -1,4 +1,6 @@
 /**
+ * @author: yulinxi
+ *
  * 题目：
  * JS实现一个带并发限制的异步调度器Scheduler，保证同时运行的任务最多n个。
  * 完善下面代码中的Scheduler类，使得以下程序能正确输出。
@@ -10,6 +12,7 @@
  * const timeout = (time) => new Promise(resolve => {
  *     setTimeout(resolve, time);
  * })
+ *
  * const scheduler = new Scheduler(n);
  * const addTask = (time, order) => {
  *     scheduler.add(() => timeout(time)).then(() => console.log(order);
@@ -25,6 +28,8 @@
  * // 500ms时，2完成，输出2，任务队列3进入
  * // 800ms时，3完成, 输出3，任务队列4进入
  * // 1000ms时，1完成，输出1
+ *
+ * @date: 2021/1/18 1:45 下午
  */
 
 /**
