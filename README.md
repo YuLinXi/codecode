@@ -1,5 +1,7 @@
 ## algorithm 算法题
 
+- [quickSort](./algorithm/QuickSort.js)
+
 ## dataStructure 数据结构
 
 ## 面试相关 
