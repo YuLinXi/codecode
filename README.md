@@ -1,6 +1,16 @@
 ## algorithm 算法题
 
+#### 排序
+
 - [quickSort](./algorithm/QuickSort.js)
+
+#### 查询
+
+- [BinarySearch](./algorithm/BinarySearch.js)
+
+#### 其它
+
+- [有序数组去重（快慢指针）](./algorithm/FastSlowPoiter.js)
 
 ## dataStructure 数据结构
 
