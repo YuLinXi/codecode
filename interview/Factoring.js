@@ -6,7 +6,6 @@
  * 实现一个因式分解函数Factoring，返回数组
  */
 
-
 function factoring(value) {
     if (value <= 2) return [];
     const rest = [];
