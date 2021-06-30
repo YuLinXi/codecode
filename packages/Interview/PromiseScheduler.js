@@ -37,46 +37,47 @@
  */
 
 class Scheduler {
-    constructor(count) {
-        this.count = count;
-        this.inProgressCount = 0;
-        this.watingQueue = [];
-    }
+  constructor(count) {
+    this.count = count;
+    this.inProgressCount = 0;
+    this.watingQueue = [];
+  }
 
-    add(promiseCreator) {
-        return new Promise(async (resolve) => {
-            this.execute(promiseCreator, resolve);
-        })
-    }
+  add(promiseCreator) {
+    return new Promise(async (resolve) => {
+      this.execute(promiseCreator, resolve);
+    });
+  }
 
-    async execute(promiseCreator, resolve) {
-        if (this.inProgressCount >= this.count) {
-            promiseCreator._resolve = resolve;
-            this.watingQueue.push(promiseCreator);
-        } else {
-            this.inProgressCount ++;
-            await promiseCreator();
-            resolve();
-            this.inProgressCount --;
-            if (this.watingQueue.length) {
-                const nextTask = this.watingQueue.shift();
-                this.execute(nextTask, nextTask._resolve);
-            }
-        }
+  async execute(promiseCreator, resolve) {
+    if (this.inProgressCount >= this.count) {
+      promiseCreator._resolve = resolve;
+      this.watingQueue.push(promiseCreator);
+    } else {
+      this.inProgressCount++;
+      await promiseCreator();
+      resolve();
+      this.inProgressCount--;
+      if (this.watingQueue.length) {
+        const nextTask = this.watingQueue.shift();
+        this.execute(nextTask, nextTask._resolve);
+      }
     }
+  }
 }
 
-const timeout = (time) => new Promise(resolve => {
+const timeout = (time) =>
+  new Promise((resolve) => {
     setTimeout(resolve, time);
-})
+  });
 
 const scheduler = new Scheduler(2);
 
 const addTask = (time, order) => {
-    scheduler.add(() => timeout(time)).then(() => console.log(order))
-}
+  scheduler.add(() => timeout(time)).then(() => console.log(order));
+};
 
-addTask(1000, '1')
-addTask(500, '2')
-addTask(300, '3')
-addTask(400, '4')
+addTask(1000, "1");
+addTask(500, "2");
+addTask(300, "3");
+addTask(400, "4");

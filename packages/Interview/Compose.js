@@ -5,23 +5,23 @@
  */
 
 function Compose(...args) {
-    return function ComposeFn(value) {
-        return args.reverse().reduce((rest, fn) => {
-            return fn(rest);
-        }, value)
-    }
+  return function ComposeFn(value) {
+    return args.reverse().reduce((rest, fn) => {
+      return fn(rest);
+    }, value);
+  };
 }
 
 function add(value) {
-    return value + 1;
+  return value + 1;
 }
 
 function times(value) {
-    return value * 2;
+  return value * 2;
 }
 
 function divider(value) {
-    return value / 5;
+  return value / 5;
 }
 
 const fn = Compose(divider, times, add);

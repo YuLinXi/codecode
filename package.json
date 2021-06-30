@@ -1,0 +1,11 @@
+{
+  "name": "codecode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/YuLinXi/codecode.git",
+  "author": "余梦圆 <15708444077@163.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.3.2"
+  }
+}
