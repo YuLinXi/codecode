@@ -44,7 +44,11 @@ class FileReadSystem extends EventEmitter {
       return this.once("open", this.read);
     }
     let buf = Buffer.alloc(this.highWaterMark);
-    fs.read(this.fd, buf, 0, this.highWaterMark, this.readOffset, (err, readBytes) => {
+    let howMuchToRead = this.highWaterMark;
+    if (this.end) {
+      howMuchToRead = Math.min(this.end - this.readOffset + 1, this.highWaterMark);
+    }
+    fs.read(this.fd, buf, 0, howMuchToRead, this.readOffset, (err, readBytes) => {
       if (readBytes) {
         this.readOffset += readBytes;
         this.emit("data", buf.slice(0, readBytes));
