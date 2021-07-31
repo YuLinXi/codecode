@@ -14,7 +14,7 @@ class LinkedList {
   }
 
   _getNode(index) {
-    if (index < 0 || index >= this.size) {
+    if (index < 0 || index > this.size) {
       throw new Error("越界了");
     }
     let curNode = this.head;
@@ -45,6 +45,7 @@ class LinkedList {
   remove(index) {
     let rmNode = this._getNode(index);
     if (index === 0) {
+      if (!rmNode) return undefined;
       this.head = rmNode.next;
     } else {
       let preNode = this._getNode(index - 1);
