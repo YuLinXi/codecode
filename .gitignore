@@ -12,3 +12,5 @@ jenkins.js
 nginx.template
 Dockerfile
 coverage
+*.o
+*.dSYM
