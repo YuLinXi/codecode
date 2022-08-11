@@ -9,10 +9,24 @@ void createTestData(SeqList &L) {
   }
 }
 
+void uniqueElement(SeqList &L) {
+  if (L.length == 1)
+    return;
+  int i = 0, k = 1;
+  while (k < L.length) {
+    if (L.data[i] != L.data[k]) {
+      L.data[++i] = L.data[k];
+    }
+    k++;
+  }
+  L.length = i + 1;
+}
+
 int main () {
   SeqList L;
   InitSeqList(L);
   createTestData(L);
+  uniqueElement(L);
   for (int i = 0; i < L.length; i++)
   {
     printf("%d\n", L.data[i]);
