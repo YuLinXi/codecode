@@ -5,6 +5,12 @@ typedef int DataType;
 
 void reverse(DataType L[], int left, int right, int arraySize) {
   int i = (left + right) / 2;
+  int temp;
+  for (int j = left; j < i; j++)
+  {
+    temp = L[j];
+    L[j] = L[right - j];
+  }
 }
 
 void exchange(DataType L[], int m, int n, int size)
