@@ -1,12 +1,25 @@
 ## TypeScript 类型体操通关秘籍
 
+### 四种特殊类型
+
+- never 代表不可达，比如函数抛异常的时候，返回值就是 never。
+- void 代表空，可以是 undefined 或 never。
+- any 是任意类型，任何类型都可以赋值给它，它也可以赋值给任何类型（除了 never）。
+- unknown 是未知类型，任何类型都可以赋值给它，但是它不可以赋值给别的类型。
+
 ### 基础类型运算
 
-- 条件：`extends ? : `
+- 条件：`extends ? : `， `A extends B ——> B是否为A的子类型`
 - 推导：`infer`
 - 联合：`|`
 - 交叉：`&`
 - 映射：`[Key in keyof T as ... ]`、
+
+### Ts类型编程特性
+
+- 没有**循环**，使用**递归**实现循环。
+- 没有**分支**，使用`extends ? : `实现分支。
+- 没有**等号**，使用`extends`判断相等；
 
 ### 套路一 模式匹配做提取
 
@@ -239,13 +252,14 @@ type UppercaseKey<T extends Record<string, any>> = {
 }
 ```
 
-##### ToReadonly、ToPartial、ToMutable、ToRequired
+##### ToReadonly、ToPartial、ToMutable、ToRequired、ToPartial
 
 ```typescript
 type ToReadonly<T> =  {
   readonly [Key in keyof T]: T[Key];
 }
 
+// { name: string; } => { name?: string | undefined; }
 type ToPartial<T> = {
   [Key in keyof T]?: T[Key]
 }
@@ -271,3 +285,117 @@ type FilterByValueType<
     as T[Key] extends ValueType ? Key : never]: T[Key]
 }
 ```
+
+### 套路三 递归复用做循环
+
+#### Promise 的递归复用
+
+##### DeepPromiseValueType
+
+```typescript
+// Promise结构 
+type ttt = Promise<Promise<Promise<Record<string, any>>>>;
+
+type DeepPromiseValueType<T> = 
+  T extends Promise<infer ValueType> 
+    ? DeepPromiseValueType2<ValueType>
+    : T;
+```
+
+#### 数组类型的递归
+
+##### ReverseArr
+
+```typescript
+type ReverseArr<Arr extends unknown[]> = 
+  Arr extends [infer First, ...infer Rest] 
+    ? [...ReverseArr<Rest>, First] 
+    : Arr;
+```
+
+##### Includes、RemoveItem
+
+```typescript
+// 相等条件，A是B的子类型且B也是A的子类型
+type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false);
+
+type Includes<Arr extends unknown[], FindItem> = 
+  Arr extends [infer First, ...infer Rest]
+    ? IsEqual<First, FindItem> extends true
+      ? true
+      : Includes<Rest, FindItem>
+    : false;
+  
+type RemoveItem<
+  Arr extends unknown[], 
+  Item, 
+  Result extends unknown[] = []
+> = Arr extends [infer First, ...infer Rest]
+    ? IsEqual<First, Item> extends true
+      ? RemoveItem<Rest, Item, Result>
+      : RemoveItem<Rest, Item, [...Result, First]>
+    : Result;
+```
+
+##### BuildArray
+
+```typescript
+type BuildArray<
+  Length extends number, 
+  Ele = unknown, 
+  Arr extends unknown[] = []
+> = Arr['length'] extends Length 
+    ? Arr 
+    : BuildArray<Length, Ele, [...Arr, Ele]>;
+```
+
+#### 字符串类型的递归
+
+##### ReplaceAll
+
+```typescript
+type ReplaceAll<
+  Str extends string, 
+  From extends string, 
+  To extends string
+> = Str extends `${infer Left}${From}${infer Right}`
+    ? `${Left}${To}${ReplaceAll<Right, From, To>}`
+    : Str;
+```
+
+##### StringToUnion
+
+```typescript
+type StringToUnion<Str extends string> = 
+  Str extends `${infer First}${infer Rest}`
+    ? First | StringToUnion<Rest>
+    : never;
+```
+##### ReverseStr
+
+```typescript
+type ReverseStr<
+  Str extends string, 
+  Result extends string = ''
+> = Str extends `${infer First}${infer Rest}` 
+  ? ReverseStr<Rest, `${First}${Result}`> 
+  : Result;
+```
+
+#### 对象类型的递归
+
+##### DeepReadonly
+
+```typescript
+type DeepReadonly<Obj extends Record<string, any>> =
+  Obj extends any ? {
+    readonly [Key in keyof Obj]:
+      Obj[Key] extends object
+        ? Obj[Key] extends (...s: unknown[]) => unknown
+          ? Obj[Key]
+          : DeepReadonly<Obj[Key]>
+        : Obj[Key]
+      } : never
+```
+
+**注**：为什么需要`Obj extends any`，因为TS只有类型被用到的时候才会做类型计算，这里触发计算，否则深层对象key无法添加`readonly`

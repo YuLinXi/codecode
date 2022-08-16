@@ -38,4 +38,43 @@ type ToMutable<T> = {
   -readonly [Key in keyof T]: T[Key]
 }
 
-type a = ToMutable<{readonly a: string}>
+type ttt = Promise<Promise<Promise<Record<string, any>>>>;
+
+type DeepPromiseValueType<P extends Promise<unknown>> =
+    P extends Promise<infer ValueType>
+        ? ValueType extends Promise<unknown>
+            ? DeepPromiseValueType<ValueType>
+            : ValueType
+        : never;
+
+type a = DeepPromiseValueType<ttt>
+
+type DeepPromiseValueType2<T> =
+    T extends Promise<infer ValueType>
+        ? DeepPromiseValueType2<ValueType>
+        : T;
+
+type obj = {
+    a: {
+        b: {
+            c: {
+                f: () => 'dong',
+                d: {
+                    e: {
+                        guang: string
+                    }
+                }
+            }
+        }
+    }
+}
+
+type DeepReadonly<Obj extends Record<string, any>> =
+  Obj extends any ? {
+    readonly [Key in keyof Obj]:
+      Obj[Key] extends object
+        ? Obj[Key] extends (...s: unknown[]) => unknown
+          ? Obj[Key]
+          : DeepReadonly<Obj[Key]>
+        : Obj[Key]
+      } : never
