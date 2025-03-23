@@ -6,6 +6,7 @@ export default function mountComponent(virtualDOM, container, oldDOM) {
   let component = null;
   if (isFunctionComponent(virtualDOM)) {
     nextVirtualDOM = buildFunctionComponent(virtualDOM)
+    console.log(nextVirtualDOM, 'nextVirtualDOM')
   } else {
     nextVirtualDOM = buildClassComponent(virtualDOM)
     component = nextVirtualDOM.component;

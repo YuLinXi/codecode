@@ -49,6 +49,7 @@ function Demo() {
   return <div>Demo</div>
 }
 
+
 function Header(props) {
   return <div>
     <div>header</div>
@@ -57,61 +58,66 @@ function Header(props) {
   </div>
 }
 
-// TinyReact.render(<Header title="title" />, root)
+
+TinyReact.render(<Header title="title" />, root)
 
 
-class Alert extends TinyReact.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "title"
-    }
-  }
+// class Alert extends TinyReact.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       title: "title"
+//     }
+//   }
 
-  handleClick = () => {
-    this.setState({ title: 'title2' })
-  }
+//   handleClick = () => {
+//     this.setState({ title: 'title2' })
+//   }
 
 
-  render() {
-    return <div onClick={this.handleClick}>
-      {this.props.name}
-      {this.props.age}
-      Alert Component
-    </div>
-  }
-}
+//   render() {
+//     return <div onClick={this.handleClick}>
+//       {this.props.name}
+//       {this.props.age}
+//       Alert Component
+//     </div>
+//   }
+// }
 
-class Good extends TinyReact.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "title"
-    }
-  }
+// let AlertVdom = <Alert />
 
-  handleClick = () => {
-    this.setState({ title: 'title2' })
-  }
+// console.log(AlertVdom, 'Alert')
 
-  componentDidMount() {
-    console.log('componentDidMount')
-    console.log(this.input)
-  }
+// class Good extends TinyReact.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       title: "title"
+//     }
+//   }
 
-  render() {
-    return <div onClick={this.handleClick}>
-      {this.props.name}
-      {this.props.age}
-      Good Component
-      <input type="text" ref={input => this.input = input} />
-    </div>
-  }
-}
+//   handleClick = () => {
+//     this.setState({ title: 'title2' })
+//   }
 
-TinyReact.render(<Alert name="张3" age="18" />, root);
+//   componentDidMount() {
+//     console.log('componentDidMount')
+//     console.log(this.input)
+//   }
 
-setTimeout(() => {
-  // TinyReact.render(<Alert name="张32" age="188" />, root);
-  TinyReact.render(<Good name="张4" age="20" />, root);
-}, 2000)
+//   render() {
+//     return <div onClick={this.handleClick}>
+//       {this.props.name}
+//       {this.props.age}
+//       Good Component
+//       <input type="text" ref={input => this.input = input} />
+//     </div>
+//   }
+// }
+
+// TinyReact.render(<Alert name="张3" age="18" />, root);
+
+// setTimeout(() => {
+//   // TinyReact.render(<Alert name="张32" age="188" />, root);
+//   TinyReact.render(<Good name="张4" age="20" />, root);
+// }, 2000)

@@ -29,7 +29,7 @@ module.exports = {
     })
   ],
   devServer: {
-    // 指定开发环境应用运行的根据目录
+    // 指定开发环境应用运行的根据目录·
     contentBase: "./dist",
     // 指定控制台输出的信息
     stats: "errors-only",
